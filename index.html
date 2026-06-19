@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Seminar Nasional HMJ IPII</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #eef2f7; padding: 20px; margin: 0; }
+        .container { max-width: 420px; background: #ffffff; padding: 30px; margin: 20px auto; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); border-top: 8px solid #0056b3; }
+        .header-box { text-align: center; margin-bottom: 25px; }
+        .stiker-seminar { width: 120px; height: 120px; margin-bottom: 10px; animation: bounce 2s infinite ease-in-out; }
+        h2 { margin: 0; color: #0056b3; font-size: 24px; font-weight: bold; }
+        p.sub-title { margin: 5px 0 0 0; color: #666; font-size: 14px; }
+        label { display: block; margin-top: 15px; color: #333; font-weight: 600; font-size: 14px; }
+        input, select { width: 100%; padding: 12px; margin-top: 6px; box-sizing: border-box; border: 1px solid #ced4da; border-radius: 6px; font-size: 14px; background: #f8f9fa; transition: 0.3s; }
+        input:focus, select:focus { border-color: #0056b3; background: #fff; outline: none; }
+        button { width: 100%; padding: 14px; background: #0056b3; color: white; border: none; border-radius: 6px; margin-top: 25px; cursor: pointer; font-size: 16px; font-weight: bold; box-shadow: 0 4px 12px rgba(0, 86, 179, 0.2); transition: 0.3s; }
+        button:hover { background: #004085; transform: translateY(-1px); }
+        .tiket-box { display: none; text-align: center; margin-top: 25px; padding: 20px; background: #fff; border: 2px dashed #0056b3; border-radius: 8px; background-color: #f0f7ff; }
+        .tiket-box h3 { margin: 0 0 10px 0; color: #0056b3; }
+        .tiket-box img { margin: 15px 0; width: 180px; height: 180px; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .instruksi { font-size: 12px; color: #555; margin-top: 8px; font-style: italic; }
+        .badge { display: inline-block; padding: 6px 14px; background: #28a745; color: white; border-radius: 20px; font-size: 12px; font-weight: bold; margin-top: 5px; }
+        .badge.vip { background: #ffc107; color: #212529; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-box">
+        <img class="stiker-seminar" src="https://png.pngtree.com/png-clipart/20211013/ourmid/pngtree-indonesia-hand-lettering-png-image_3981897.png" alt="Stiker Seminar">
+        <h2>Seminar Nasional HMJ IPII</h2>
+        <p class="sub-title">Pendaftaran Online</p>
+    </div>
+
+    <form id="daftarForm">
+        <label>Nama Lengkap:</label>
+        <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" required>
+
+        <label>Email Aktif:</label>
+        <input type="email" id="email" name="email" placeholder="contoh@email.com" required>
+
+        <label>No WhatsApp:</label>
+        <input type="text" id="no_hp" name="no_hp" placeholder="08xxxxxxxxxx" required>
+
+        <label>Instansi/Kampus:</label>
+        <input type="text" id="instansi" name="instansi" placeholder="Nama asal instansi" required>
+
+        <label>Jenis Tiket:</label>
+        <select id="jenis_tiket" name="jenis_tiket" required>
+            <option value="" disabled selected>-- Pilih Kategori Tiket --</option>
+            <option value="Reguler">Reguler</option>
+            <option value="VIP">VIP</option>
+        </select>
+
+        <button type="submit" id="btnSubmit">Daftar Sekarang</button>
+    </form>
+
+    <div id="tiketBox" class="tiket-box">
+        <h3>E-Tiket Berhasil Dibuat!</h3>
+        <p id="namaTiket" style="font-weight: bold; margin: 5px 0; font-size: 18px;"></p>
+        <div id="badgeTiket" class="badge"></div>
+        <p id="idTiket" style="color: #0056b3; font-weight: bold; font-size: 14px; margin: 10px 0 0 0;"></p>
+        <img id="qrImage" src="" alt="QR Code Tiket">
+        <p class="instruksi">*QR Code telah dikirim ke email Anda. Silakan cek kotak masuk/spam atau screenshot layar ini.</p>
+    </div>
+</div>
+
+<script>
+    const FORM_URL = "https://script.google.com/macros/s/AKfycby7DKATyw_LSIituSHtLLPzoe5hBzZ6R3DhTKguZ-b4PEYglv10oFJg0VuJNBByS-WbuQ/exec";
+
+    document.getElementById('daftarForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const btn = document.getElementById('btnSubmit');
+        btn.innerText = "Memproses Pendaftaran...";
+        btn.disabled = true;
+
+        const idAcak = "IPII-" + Math.floor(1000 + Math.random() * 9000);
+        const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${idAcak}`;
+        
+        const namaInput = document.getElementById('nama').value;
+        const tiketType = document.getElementById('jenis_tiket').value;
+
+        const formData = new FormData();
+        formData.append('action', 'daftar');
+        formData.append('idPeserta', idAcak);
+        formData.append('nama', namaInput);
+        formData.append('email', document.getElementById('email').value);
+        formData.append('no_hp', document.getElementById('no_hp').value);
+        formData.append('instansi', document.getElementById('instansi').value);
+        formData.append('jenis_tiket', tiketType);
+        formData.append('qrUrl', qrApiUrl);
+
+        fetch(FORM_URL, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors'
+        })
+        .then(res => {
+            alert("🎉 Pendaftaran Sukses! E-Tiket QR Code telah diproses.");
+            
+            document.getElementById('namaTiket').innerText = namaInput;
+            const badge = document.getElementById('badgeTiket');
+            badge.innerText = tiketType;
+            if(tiketType === "VIP") { badge.className = "badge vip"; } else { badge.className = "badge"; }
+            
+            document.getElementById('idTiket').innerText = "ID: " + idAcak;
+            document.getElementById('qrImage').src = qrApiUrl;
+            document.getElementById('tiketBox').style.display = 'block';
+            
+            document.getElementById('daftarForm').reset();
+            btn.innerText = "Daftar Sekarang";
+            btn.disabled = false;
+        })
+        .catch(err => {
+            alert("⚠️ Terjadi kesalahan sistem lokal, namun data dicoba dikirim. Silakan cek Sheets.");
+            btn.innerText = "Daftar Sekarang";
+            btn.disabled = false;
+        });
+    });
+</script>
+</body>
+</html>
