@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Halaman Konfirmasi Bendahara</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f7f6; }
+    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    h2 { text-align: center; color: #333; }
+    input[type="password"] { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    button { width: 100%; padding: 10px; background-color: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+    button:hover { background-color: #219653; }
+    .hidden { display: none; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    th { background-color: #2980b9; color: white; }
+    .btn-konfirmasi { background-color: #2ecc71; padding: 5px 10px; color: white; border-radius: 4px; text-decoration: none; font-size: 14px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Sistem Konfirmasi Bendahara</h2>
+  
+  <div id="loginSection">
+    <label for="pass">Masukkan Password Bendahara:</label>
+    <input type="password" id="pass" placeholder="Password...">
+    <button onclick="cekPassword()">Masuk</button>
+  </div>
+
+  <div id="mainSection" class="hidden">
+    <h3>Daftar Peserta (Pending)</h3>
+    <button onclick="muatDataPeserta()" style="background-color: #34495e; margin-bottom: 15px;">Segarkan Daftar</button>
+    <div id="pesertaList">Memuat data...</div>
+  </div>
+</div>
+
+<script>
+  // TAUTKAN DENGAN URL WEB APP (LINK /exec) APPS SCRIPT ANDA
+  const FORM_URL = "https://script.google.com/macros/s/AKfycbzM6mAGG9O3idaXTmsw18Bub3o1l58hbFIVKEKADBkTjwAqljhRwtcG1YPDSYmuyn8NzA/exec";
+  const PASSWORD_BENDAHARA = "12345"; 
+
+  function cekPassword() {
+    var inputPass = document.getElementById("pass").value;
+    if (inputPass === PASSWORD_BENDAHARA) {
+      document.getElementById("loginSection").classList.add("hidden");
+      document.getElementById("mainSection").classList.remove("hidden");
+      muatDataPeserta();
+    } else {
+      alert("Password salah, hanya bendahara yang diizinkan!");
+    }
+  }
+
+  function muatDataPeserta() {
+    var listDiv = document.getElementById("pesertaList");
+    listDiv.innerHTML = "Memuat data dari Google Sheets...";
+    
+    fetch(FORM_URL)
+      .then(res => res.json())
+      .then(data => {
+        if (data.length === 0) {
+          listDiv.innerHTML = "<p>Semua pendaftar sudah lunas.</p>";
+          return;
+        }
+        
+        var tabelHtml = "<table><tr><th>ID</th><th>Nama</th><th>Tiket</th><th>Aksi</th></tr>";
+        data.forEach(peserta => {
+          var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + peserta.idPeserta;
+          
+          tabelHtml += `<tr>
+            <td>${peserta.idPeserta}</td>
+            <td>${peserta.nama}</td>
+            <td>${peserta.jenis_tiket}</td>
+            <td><span class="btn-konfirmasi" onclick="konfirmasiLunas('${peserta.idPeserta}', '${qrUrl}')">Set Lunas</span></td>
+          </tr>`;
+        });
+        tabelHtml += "</table>";
+        listDiv.innerHTML = tabelHtml;
+      })
+      .catch(err => {
+        listDiv.innerHTML = "Gagal memuat data.";
+        console.error(err);
+      });
+  }
+
+  function konfirmasiLunas(id, qr) {
+    if (confirm("Konfirmasi pembayaran untuk ID " + id + "?")) {
+      var formData = new FormData();
+      formData.append("action", "konfirmasiLunas");
+      formData.append("idPeserta", id);
+      formData.append("qrUrl", qr);
+
+      fetch(FORM_URL, {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.text())
+      .then(response => {
+        if (response === "Sukses Konfirmasi") {
+          alert("Sukses! Status diubah menjadi Lunas dan E-Tiket telah dikirim ke peserta.");
+          muatDataPeserta(); 
+        } else {
+          alert("Gagal memproses konfirmasi.");
+        }
+      })
+      .catch(err => alert("Terjadi kesalahan sistem."));
+    }
+  }
+</script>
+</body>
+</html>
