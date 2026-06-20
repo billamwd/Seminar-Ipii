@@ -1,125 +1,274 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran Seminar Nasional HMJ IPII</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #eef2f7; padding: 20px; margin: 0; }
-        .container { max-width: 420px; background: #ffffff; padding: 30px; margin: 20px auto; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); border-top: 8px solid #0056b3; }
-        .header-box { text-align: center; margin-bottom: 25px; }
-        .stiker-seminar { width: 120px; height: 120px; margin-bottom: 10px; animation: bounce 2s infinite ease-in-out; }
-        h2 { margin: 0; color: #0056b3; font-size: 24px; font-weight: bold; }
-        p.sub-title { margin: 5px 0 0 0; color: #666; font-size: 14px; }
-        label { display: block; margin-top: 15px; color: #333; font-weight: 600; font-size: 14px; }
-        input, select { width: 100%; padding: 12px; margin-top: 6px; box-sizing: border-box; border: 1px solid #ced4da; border-radius: 6px; font-size: 14px; background: #f8f9fa; transition: 0.3s; }
-        input:focus, select:focus { border-color: #0056b3; background: #fff; outline: none; }
-        button { width: 100%; padding: 14px; background: #0056b3; color: white; border: none; border-radius: 6px; margin-top: 25px; cursor: pointer; font-size: 16px; font-weight: bold; box-shadow: 0 4px 12px rgba(0, 86, 179, 0.2); transition: 0.3s; }
-        button:hover { background: #004085; transform: translateY(-1px); }
-        .tiket-box { display: none; text-align: center; margin-top: 25px; padding: 20px; background: #fff; border: 2px dashed #0056b3; border-radius: 8px; background-color: #f0f7ff; }
-        .tiket-box h3 { margin: 0 0 10px 0; color: #0056b3; }
-        .tiket-box img { margin: 15px 0; width: 180px; height: 180px; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .instruksi { font-size: 12px; color: #555; margin-top: 8px; font-style: italic; }
-        .badge { display: inline-block; padding: 6px 14px; background: #28a745; color: white; border-radius: 20px; font-size: 12px; font-weight: bold; margin-top: 5px; }
-        .badge.vip { background: #ffc107; color: #212529; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pendaftaran Seminar Nasional HMJ IPII</title>
+  <style>
+    :root {
+      --primary-color: #2980b9;    /* Biru Utama */
+      --secondary-color: #27ae60;  /* Hijau Sukses */
+      --text-color: #2c3e50;       /* Warna Teks Gelap */
+      --bg-color: #f4f7f9;         /* Background Biru Putih Sangat Muda */
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .form-container {
+      background: #ffffff;
+      max-width: 500px;
+      width: 100%;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(41, 128, 185, 0.06);
+      border: 1px solid #e1e8ed;
+    }
+
+    .header-section {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    /* CSS UNTUK ANIMASI BUKU BERGERAK */
+    .animasi-membaca {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 15px auto;
+      background: url('https://fonts.gstatic.com/s/e/notoemoji/latest/1f4d6/512.webp') no-repeat center;
+      background-size: contain;
+      animation: mengambang 2.5s ease-in-out infinite;
+    }
+
+    @keyframes mengambang {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+      100% { transform: translateY(0px); }
+    }
+
+    h2 {
+      font-size: 22px;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+
+    p.subtitle {
+      font-size: 14px;
+      color: #7f8c8d;
+    }
+
+    .info-pembayaran {
+      background-color: #eaf2f8;
+      border-left: 4px solid var(--primary-color);
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 25px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #1b4f72;
+    }
+
+    .info-pembayaran strong {
+      color: var(--primary-color);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--text-color);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccd1d9;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background-color: #ffffff;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.15);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #2471a3;
+    }
+
+    /* KREDIT KHUSUS PINK SESUAI REKUES */
+    .footer-credit {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #ff4081; /* Pink Cerah */
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    .footer-credit strong {
+      color: #e91e63; /* Pink Lebih Tegas */
+      text-shadow: 0 0 1px rgba(233,30,99,0.1);
+    }
+
+    /* Bagian Sukses Tersembunyi */
+    .hidden { display: none; }
+    
+    .sukses-container {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .sukses-icon {
+      font-size: 50px;
+      color: var(--secondary-color);
+      margin-bottom: 15px;
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header-box">
-        <img class="stiker-seminar" src="https://png.pngtree.com/png-clipart/20211013/ourmid/pngtree-indonesia-hand-lettering-png-image_3981897.png" alt="Stiker Seminar">
-        <h2>Seminar Nasional HMJ IPII</h2>
-        <p class="sub-title">Pendaftaran Online</p>
+<div class="container" style="width: 100%; max-width: 500px;">
+  <div id="formSection" class="form-container">
+  <!-- TEMPAT BANNER / SPANDUK KEGIATAN -->
+  <!-- Jika file gambar ada di folder yang sama di Koder, ganti src menjadi src="spanduk.jpg" -->
+  <img src="https://awsimages.detik.net.id/community/media/visual/2026/03/11/spanduk-idul-fitri-1773220421214_169.png?w=600&q=90" alt="Spanduk Seminar Nasional" style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+
+  <h2>Seminar Nasional HMJ IPII</h2>
+  <p class="subtitle">Isi data diri Anda dengan benar untuk mendaftar</p>
+</div>
+
+    <div class="info-pembayaran">
+      <strong>📢 Informasi Pembayaran:</strong><br>
+      Silakan transfer biaya pendaftaran sesuai jenis tiket ke:<br>
+      • <strong>Bank Mandiri:</strong> 123-456-7890 (a.n. Bendahara HMJ)<br>
+      • <strong>Dana/OVO:</strong> 0812-3456-7890<br>
+      Kirimkan bukti transfer ke WhatsApp Bendahara setelah mengisi form ini.
     </div>
 
-    <form id="daftarForm">
-        <label>Nama Lengkap:</label>
-        <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" required>
+    <form id="regForm">
+      <div class="form-group">
+        <label for="nama">Nama Lengkap</label>
+        <input type="text" id="nama" name="nama" placeholder="Contoh: Salsabila" required>
+      </div>
 
-        <label>Email Aktif:</label>
-        <input type="email" id="email" name="email" placeholder="contoh@email.com" required>
+      <div class="form-group">
+        <label for="email">Alamat Email</label>
+        <input type="email" id="email" name="email" placeholder="Contoh: salsa@gmail.com" required>
+      </div>
 
-        <label>No WhatsApp:</label>
-        <input type="text" id="no_hp" name="no_hp" placeholder="08xxxxxxxxxx" required>
+      <div class="form-group">
+        <label for="no_hp">Nomor WhatsApp</label>
+        <input type="tel" id="no_hp" name="no_hp" placeholder="Contoh: 0812345678" required>
+      </div>
 
-        <label>Instansi/Kampus:</label>
-        <input type="text" id="instansi" name="instansi" placeholder="Nama asal instansi" required>
+      <div class="form-group">
+        <label for="instansi">Asal Instansi/Kampus</label>
+        <input type="text" id="instansi" name="instansi" placeholder="Contoh: UIN DATOKARAMA PALU" required>
+      </div>
 
-        <label>Jenis Tiket:</label>
+      <div class="form-group">
+        <label for="jenis_tiket">Kategori Tiket</label>
         <select id="jenis_tiket" name="jenis_tiket" required>
-            <option value="" disabled selected>-- Pilih Kategori Tiket --</option>
-            <option value="Reguler">Reguler</option>
-            <option value="VIP">VIP</option>
+          <option value="" disabled selected>-- Pilih Tiket --</option>
+          <option value="Mahasiswa Internal (Rp 25.000)">Mahasiswa Internal (Rp 25.000)</option>
+          <option value="Umum / Eksternal (Rp 40.000)">Umum / Eksternal (Rp 40.000)</option>
         </select>
+      </div>
 
-        <button type="submit" id="btnSubmit">Daftar Sekarang</button>
+      <button type="submit" id="btnSubmit">Daftar Sekarang</button>
     </form>
+  </div>
 
-    <div id="tiketBox" class="tiket-box">
-        <h3>E-Tiket Berhasil Dibuat!</h3>
-        <p id="namaTiket" style="font-weight: bold; margin: 5px 0; font-size: 18px;"></p>
-        <div id="badgeTiket" class="badge"></div>
-        <p id="idTiket" style="color: #0056b3; font-weight: bold; font-size: 14px; margin: 10px 0 0 0;"></p>
-        <img id="qrImage" src="" alt="QR Code Tiket">
-        <p class="instruksi">*QR Code telah dikirim ke email Anda. Silakan cek kotak masuk/spam atau screenshot layar ini.</p>
+  <div id="suksesSection" class="form-container hidden">
+    <div class="sukses-container">
+      <div class="sukses-icon">✓</div>
+      <h2>Pendaftaran Berhasil!</h2>
+      <p style="margin: 15px 0; color: #555; line-height: 1.6;">
+        Data Anda sudah tersimpan dengan status <strong>PENDING</strong>.<br><br>
+        Segera kirimkan bukti pembayaran Anda ke WhatsApp Bendahara agar tiket resmi dan QR Code Anda diaktifkan serta dikirim via email.
+      </p>
+      <button onclick="window.location.reload()" style="background-color: var(--primary-color);">Kembali</button>
     </div>
+  </div>
+
+  <div class="footer-credit">
+    By <strong>billamwd</strong>
+  </div>
 </div>
 
 <script>
-    const FORM_URL = "https://script.google.com/macros/s/AKfycby7DKATyw_LSIituSHtLLPzoe5hBzZ6R3DhTKguZ-b4PEYglv10oFJg0VuJNBByS-WbuQ/exec";
+  const FORM_URL = "https://script.google.com/macros/s/AKfycbzM6mAGG9O3idaXTmsw18Bub3o1l58hbFIVKEKADBkTjwAqljhRwtcG1YPDSYmuyn8NzA/exec";
 
-    document.getElementById('daftarForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const btn = document.getElementById('btnSubmit');
-        btn.innerText = "Memproses Pendaftaran...";
-        btn.disabled = true;
+  document.getElementById("regForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    
+    var btn = document.getElementById("btnSubmit");
+    btn.innerText = "Memproses...";
+    btn.disabled = true;
 
-        const idAcak = "IPII-" + Math.floor(1000 + Math.random() * 9000);
-        const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${idAcak}`;
-        
-        const namaInput = document.getElementById('nama').value;
-        const tiketType = document.getElementById('jenis_tiket').value;
+    var idPeserta = "IPII-" + Date.now().toString().slice(-6);
 
-        const formData = new FormData();
-        formData.append('action', 'daftar');
-        formData.append('idPeserta', idAcak);
-        formData.append('nama', namaInput);
-        formData.append('email', document.getElementById('email').value);
-        formData.append('no_hp', document.getElementById('no_hp').value);
-        formData.append('instansi', document.getElementById('instansi').value);
-        formData.append('jenis_tiket', tiketType);
-        formData.append('qrUrl', qrApiUrl);
+    var formData = new FormData(this);
+    formData.append("action", "daftar");
+    formData.append("idPeserta", idPeserta);
 
-        fetch(FORM_URL, {
-            method: 'POST',
-            body: formData,
-            mode: 'no-cors'
-        })
-        .then(res => {
-            alert("🎉 Pendaftaran Sukses! E-Tiket QR Code telah diproses.");
-            
-            document.getElementById('namaTiket').innerText = namaInput;
-            const badge = document.getElementById('badgeTiket');
-            badge.innerText = tiketType;
-            if(tiketType === "VIP") { badge.className = "badge vip"; } else { badge.className = "badge"; }
-            
-            document.getElementById('idTiket').innerText = "ID: " + idAcak;
-            document.getElementById('qrImage').src = qrApiUrl;
-            document.getElementById('tiketBox').style.display = 'block';
-            
-            document.getElementById('daftarForm').reset();
-            btn.innerText = "Daftar Sekarang";
-            btn.disabled = false;
-        })
-        .catch(err => {
-            alert("⚠️ Terjadi kesalahan sistem lokal, namun data dicoba dikirim. Silakan cek Sheets.");
-            btn.innerText = "Daftar Sekarang";
-            btn.disabled = false;
-        });
+    fetch(FORM_URL, {
+      method: "POST",
+      body: formData
+    })
+    .then(res => res.text())
+    .then(response => {
+      if(response === "Sukses") {
+        document.getElementById("formSection").classList.add("hidden");
+        document.getElementById("suksesSection").classList.remove("hidden");
+      } else {
+        alert("Terjadi kesalahan: " + response);
+        btn.innerText = "Daftar Sekarang";
+        btn.disabled = false;
+      }
+    })
+    .catch(err => {
+      alert("Gagal terhubung ke server.");
+      btn.innerText = "Daftar Sekarang";
+      btn.disabled = false;
     });
+  });
 </script>
 </body>
 </html>
